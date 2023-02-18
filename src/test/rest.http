@@ -1,0 +1,32 @@
+### Ctr day
+GET http://localhost:8080/api/ctr/day
+
+### Ctr hour
+GET http://localhost:8080/api/ctr/hour
+
+### Ctr minute 30
+GET http://localhost:8080/api/ctr/minute30
+
+### Evpm day ###
+GET http://localhost:8080/api/evpm/registration/day
+###
+GET http://localhost:8080/api/evpm/content/day
+###
+GET http://localhost:8080/api/evpm/lead/day
+
+### Evpm hour ###
+GET http://localhost:8080/api/evpm/registration/hour
+
+### Evpm minute 30 ###
+GET http://localhost:8080/api/evpm/registration/minute30
+###
+GET http://localhost:8080/api/evpm/misc/minute30
+###
+GET http://localhost:8080/api/evpm/misc/day
+
+
+### AGGREGATES ###
+GET http://localhost:8080/api/aggr/site/registration
+
+### Aggr dma signup
+GET http://localhost:8080/api/aggr/dma/signup

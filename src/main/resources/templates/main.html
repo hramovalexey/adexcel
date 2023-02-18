@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html ng-app="adxcelApp" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Adxcel</title>
+    <base href="/">
+
+    <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/angular_material/1.2.1/angular-material.min.css">
+    <link th:href="@{/css/main.css}" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <script th:src="'https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js'"></script>
+    <script th:src="'https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular-resource.js'"></script>
+    <script th:src="'https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular-animate.min.js'"></script>
+    <script th:src="'https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular-aria.min.js'"></script>
+    <script th:src="'https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular-messages.min.js'"></script>
+    <script th:src="'https://ajax.googleapis.com/ajax/libs/angular_material/1.2.1/angular-material.min.js'"></script>
+
+    <script th:src="@{/js/chart/chart.js}"></script>
+    <script th:src="@{/js/chart/chartjs-adapter-date-fns.bundle.min.js}"></script>
+    <script th:src="@{/js/djv/djv.js}"></script>
+    <script th:src="@{/js/app.js}"></script>
+    <script th:src="@{/js/rateController.js}"></script>
+    <script th:src="@{/js/aggrController.js}"></script>
+
+</head>
+<style>
+
+</style>
+
+<body>
+<div class="header" md-whiteframe="8">
+    <table style="margin-left: 80px;">
+        <tr>
+            <td style="font-size: 20px; text-align: right; padding-bottom: 0; padding-top: 0; color: #42036F;">
+                Advertising
+            </td>
+            <td rowspan="2" style="width: 140px; font-size: 25px; text-align: right; color: #3216b0;">Dashboard</td>
+            <td rowspan="2" style="width: 0px"></td>
+        </tr>
+
+        <tr>
+            <td style="font-size: 20px; text-align: right; padding-bottom: 0; padding-top: 0; color: #42036F;">
+                campaign
+            </td>
+        </tr>
+    </table>
+</div>
+
+<div ng-controller="rateController" class="row" ng-cloak>
+
+
+    <!--    CTR GRAPH-->
+
+    <div class="graph_tile" md-whiteframe="8">
+        <div class="rate_header">
+            <md-button
+                    ng-class="currCtrTime == DAY ? 'md-raised md-primary button_sm md-hue-1' : 'button_sm md-hue-1'"
+                    ng-click="onGetCtr(DAY)" ng-disabled="false">
+                Days
+            </md-button>
+            <md-button
+                    ng-class="currCtrTime == HOUR ? 'md-raised md-primary button_sm md-hue-1' : 'button_sm md-hue-1'"
+                    ng-click="onGetCtr(HOUR)" ng-disabled="false">
+                Hours
+            </md-button>
+            <md-button
+                    ng-class="currCtrTime == MINUTE30 ? 'md-raised md-primary button_sm md-hue-1' : 'button_sm md-hue-1'"
+                    ng-click="onGetCtr(MINUTE30)" ng-disabled="false">
+                30 minutes
+            </md-button>
+            <md-progress-circular style="margin-left: 7px;" ng-show="isRateCtrProgress"
+                                  class="progress_element" md-mode="indeterminate"></md-progress-circular>
+        </div>
+        <div>
+            <canvas id="ctrChart"></canvas>
+        </div>
+    </div>
+
+    <!--        EVPM-->
+    <div class="graph_tile" md-whiteframe="8">
+        <div style="color: lightgray;" class="rate_header">
+            <md-button
+                    ng-class="currEvpmTime == DAY ? 'md-raised md-primary button_sm md-hue-1' : 'button_sm md-hue-1'"
+                    ng-click="onGetEvpm(currEvpmEvent, DAY)" ng-disabled="false">
+                Days
+            </md-button>
+            <md-button
+                    ng-class="currEvpmTime == HOUR ? 'md-raised md-primary button_sm md-hue-1' : 'button_sm md-hue-2'"
+                    ng-click="onGetEvpm(currEvpmEvent, HOUR)" ng-disabled="false">
+                Hours
+            </md-button>
+            <md-button
+                    ng-class="currEvpmTime == MINUTE30 ? 'md-raised md-primary button_sm md-hue-1' : 'button_sm'"
+                    ng-click="onGetEvpm(currEvpmEvent, MINUTE30)" ng-disabled="false">
+                30 minutes
+            </md-button>
+            ||
+            <md-button
+                    ng-class="currEvpmEvent == REGISTRATION ? 'md-raised md-primary button_sm md-hue-1' : 'button_sm md-hue-1'"
+                    ng-click="onGetEvpm(REGISTRATION, currEvpmTime)" ng-disabled="false">
+                Registration
+            </md-button>
+            <md-button
+                    ng-class="currEvpmEvent == SIGNUP ? 'md-raised md-primary button_sm md-hue-1' : 'button_sm md-hue-1'"
+                    ng-click="onGetEvpm(SIGNUP, currEvpmTime)" ng-disabled="false">
+                Signup
+            </md-button>
+            <md-button
+                    ng-class="currEvpmEvent == LEAD ? 'md-raised md-primary button_sm md-hue-1' : 'button_sm md-hue-1'"
+                    ng-click="onGetEvpm(LEAD, currEvpmTime)" ng-disabled="false">
+                Lead
+            </md-button>
+            <md-button
+                    ng-class="currEvpmEvent == CONTENT ? 'md-raised md-primary button_sm md-hue-1' : 'button_sm md-hue-1'"
+                    ng-click="onGetEvpm(CONTENT, currEvpmTime)" ng-disabled="false">
+                Content
+            </md-button>
+            <md-button
+                    ng-class="currEvpmEvent == MISC ? 'md-raised md-primary button_sm md-hue-1' : 'button_sm md-hue-1'"
+                    ng-click="onGetEvpm(MISC, currEvpmTime)" ng-disabled="false">
+                Misc
+            </md-button>
+            <md-progress-circular style="margin-left: 7px;" ng-show="isRateEvpmProgress"
+                                  class="progress_element" md-mode="indeterminate"></md-progress-circular>
+        </div>
+        <div>
+            <canvas id="evpmChart"></canvas>
+        </div>
+
+    </div>
+
+</div>
+
+
+<div ng-controller="aggrController" class="row" ng-cloak>
+
+
+    <!--    DMA AGGR-->
+    <div class="table_tile" md-whiteframe="8">
+        <div class="aggr_header">
+            <md-button
+                    ng-class="currDmaEvent == REGISTRATION ? 'md-raised md-primary button_sm md-hue-1' : 'button_sm md-hue-1'"
+                    ng-click="onGetAggr(DMA, REGISTRATION)" ng-disabled="false">
+                Registration
+            </md-button>
+            <md-button
+                    ng-class="currDmaEvent == SIGNUP ? 'md-raised md-primary button_sm md-hue-1' : 'button_sm md-hue-1'"
+                    ng-click="onGetAggr(DMA, SIGNUP)" ng-disabled="false">
+                Signup
+            </md-button>
+            <md-button
+                    ng-class="currDmaEvent == LEAD ? 'md-raised md-primary button_sm md-hue-1' : 'button_sm md-hue-1'"
+                    ng-click="onGetAggr(DMA, LEAD)" ng-disabled="false">
+                Lead
+            </md-button>
+            <md-button
+                    ng-class="currDmaEvent == CONTENT ? 'md-raised md-primary button_sm md-hue-1' : 'button_sm md-hue-1'"
+                    ng-click="onGetAggr(DMA, CONTENT)" ng-disabled="false">
+                Content
+            </md-button>
+            <md-button
+                    ng-class="currDmaEvent == MISC ? 'md-raised md-primary button_sm md-hue-1' : 'button_sm md-hue-1'"
+                    ng-click="onGetAggr(DMA, MISC)" ng-disabled="false">
+                Misc
+            </md-button>
+
+            <md-input-container class="font10">
+                <label>Rows on page</label>
+                <md-select class="tab" ng-model="aggrDmaObj.rowsOnPage" ng-change="aggrDmaObj.updatePages()">
+                    <md-option ng-repeat="qty in rowsQtyList" value="{{qty}}">
+                        {{qty}}
+                    </md-option>
+                </md-select>
+
+            </md-input-container>
+            <span class="font10 span_middle"><span ng-show="isAggrDmaProgress" class="progress"><md-progress-circular
+                    class="progress_element" md-mode="indeterminate"></md-progress-circular></span><span
+                    ng-class="isAggrDmaProgress ? 'transparent span_note' : ''">Pages: {{aggrDmaObj.table.length}}</span></span>
+
+        </div>
+
+        <md-tabs md-selected="0" md-no-pagination="false"
+                 class="md-primary md-hue-3 tab"
+                 md-stretch-tabs="never" md-dynamic-height="true"
+                 md-border-bottom="true" md-swipe-content md-align-tabs="bottom"
+                 md-no-ink-bar="{{aggrDmaObj.table.length < 2}}">
+            <md-tab ng-repeat="items in aggrDmaObj.table"
+                    label="{{aggrDmaObj.table.length > 1 ? $index + 1 : ''}}">
+                <table class="tab dma">
+                    <tr class="tabHeader" style="font-weight: 700">
+                        <td class="tab">#</td>
+                        <td class="tab clickable" ng-click="aggrDmaObj.switchSort(GROUP)">DMA <span
+                                ng-show="aggrDmaObj.sortField == GROUP"><span
+                                ng-bind="aggrDmaObj.sortOrder == DESC ? '&#x25BC' : ''"></span><span
+                                ng-bind="aggrDmaObj.sortOrder == ASC ? '&#x25B2' : ''"></span></span></td>
+                        <td class="tab clickable" ng-click="aggrDmaObj.switchSort(IMPR)">Impressions <span
+                                ng-show="aggrDmaObj.sortField == IMPR"><span
+                                ng-bind="aggrDmaObj.sortOrder == DESC ? '&#x25BC' : ''"></span><span
+                                ng-bind="aggrDmaObj.sortOrder == ASC ? '&#x25B2' : ''"></span></span></td>
+                        <td class="tab clickable" ng-click="aggrDmaObj.switchSort(CTR)">CTR, % <span
+                                ng-show="aggrDmaObj.sortField == CTR"><span
+                                ng-bind="aggrDmaObj.sortOrder == DESC ? '&#x25BC' : ''"></span><span
+                                ng-bind="aggrDmaObj.sortOrder == ASC ? '&#x25B2' : ''"></span></span></td>
+                        <td class="tab clickable" ng-click="aggrDmaObj.switchSort(EVPM)">EvPM, &#x2030 <span
+                                ng-show="aggrDmaObj.sortField == EVPM"><span
+                                ng-bind="aggrDmaObj.sortOrder == DESC ? '&#x25BC' : ''"></span><span
+                                ng-bind="aggrDmaObj.sortOrder == ASC ? '&#x25B2' : ''"></span></span></td>
+                    </tr>
+                    <tr class="tab" ng-repeat="item in items">
+                        <td class="tab" ng-bind="$parent.$index * items.length + ($index + 1)"></td>
+                        <td class="tab ">{{item.group}}</td>
+                        <td class="tab">{{item.impr}}</td>
+                        <td class="tab">{{item.ctr}}</td>
+                        <td class="tab">{{item.evpm}}</td>
+                    </tr>
+                </table>
+            </md-tab>
+        </md-tabs>
+
+    </div>
+
+
+    <div class="table_tile" md-whiteframe="8">
+        <!--    SITE AGGR-->
+
+        <div class="aggr_header">
+            <md-button
+                    ng-class="currSiteEvent == REGISTRATION ? 'md-raised md-primary button_sm md-hue-1' : 'button_sm md-hue-1'"
+                    ng-click="onGetAggr(SITE, REGISTRATION)" ng-disabled="false">
+                Registration
+            </md-button>
+            <md-button
+                    ng-class="currSiteEvent == SIGNUP ? 'md-raised md-primary button_sm md-hue-1' : 'button_sm md-hue-1'"
+                    ng-click="onGetAggr(SITE, SIGNUP)" ng-disabled="false">
+                Signup
+            </md-button>
+            <md-button
+                    ng-class="currSiteEvent == LEAD ? 'md-raised md-primary button_sm md-hue-1' : 'button_sm md-hue-1'"
+                    ng-click="onGetAggr(SITE, LEAD)" ng-disabled="false">
+                Lead
+            </md-button>
+            <md-button
+                    ng-class="currSiteEvent == CONTENT ? 'md-raised md-primary button_sm md-hue-1' : 'button_sm md-hue-1'"
+                    ng-click="onGetAggr(SITE, CONTENT)" ng-disabled="false">
+                Content
+            </md-button>
+            <md-button
+                    ng-class="currSiteEvent == MISC ? 'md-raised md-primary button_sm md-hue-1' : 'button_sm md-hue-1'"
+                    ng-click="onGetAggr(SITE, MISC)" ng-disabled="false">
+                Misc
+            </md-button>
+
+            <md-input-container class="font10">
+                <label>Rows on page</label>
+                <md-select class="tab" ng-model="aggrSiteObj.rowsOnPage" ng-change="aggrSiteObj.updatePages()">
+                    <md-option ng-repeat="qty in rowsQtyList" value="{{qty}}">
+                        {{qty}}
+                    </md-option>
+                </md-select>
+            </md-input-container>
+            <span class="font10 span_middle"><span ng-show="isAggrSiteProgress" class="progress"><md-progress-circular
+                    class="progress_element" md-mode="indeterminate"></md-progress-circular></span><span
+                    ng-class="isAggrSiteProgress ? 'transparent span_note' : ''">Pages: {{aggrSiteObj.table.length}}</span></span>
+        </div>
+
+        <md-tabs md-selected="0" md-enable-disconnect="false" md-no-pagination="false"
+                 class="md-primary md-hue-3 tab"
+                 md-stretch-tabs="never" md-dynamic-height=
+                         md-border-bottom md-swipe-content md-align-tabs="bottom"
+                 md-no-ink-bar="{{aggrSiteObj.table.length < 2}}">
+            <md-tab ng-click="scrollToMe($event)" id="siteTab" ng-repeat="items in aggrSiteObj.proxy"
+                    label="{{aggrSiteObj.table.length > 1 ? $index + 1 : ''}}"
+                    md-on-select="aggrSiteObj.fillProxy($index)">
+                <table class="tab site">
+                    <tr class="tabHeader" style="font-weight: 700">
+                        <td class="tab">#</td>
+                        <td class="tab clickable" ng-click="aggrSiteObj.switchSort(GROUP)">Site <span
+                                ng-show="aggrSiteObj.sortField == GROUP"><span
+                                ng-bind="aggrSiteObj.sortOrder == DESC ? '&#x25BC' : ''"></span><span
+                                ng-bind="aggrSiteObj.sortOrder == ASC ? '&#x25B2' : ''"></span></span></td>
+                        <td class="tab clickable" ng-click="aggrSiteObj.switchSort(IMPR)">Impressions <span
+                                ng-show="aggrSiteObj.sortField == IMPR"><span
+                                ng-bind="aggrSiteObj.sortOrder == DESC ? '&#x25BC' : ''"></span><span
+                                ng-bind="aggrSiteObj.sortOrder == ASC ? '&#x25B2' : ''"></span></span></td>
+                        <td class="tab clickable" ng-click="aggrSiteObj.switchSort(CTR)">CTR, % <span
+                                ng-show="aggrSiteObj.sortField == CTR"><span
+                                ng-bind="aggrSiteObj.sortOrder == DESC ? '&#x25BC' : ''"></span><span
+                                ng-bind="aggrSiteObj.sortOrder == ASC ? '&#x25B2' : ''"></span></span></td>
+                        <td class="tab clickable" ng-click="aggrSiteObj.switchSort(EVPM)">EvPM, &#x2030 <span
+                                ng-show="aggrSiteObj.sortField == EVPM"><span
+                                ng-bind="aggrSiteObj.sortOrder == DESC ? '&#x25BC' : ''"></span><span
+                                ng-bind="aggrSiteObj.sortOrder == ASC ? '&#x25B2' : ''"></span></span></td>
+                    </tr>
+                    <tr class="tab" ng-repeat="item in items">
+                        <td class="tab" ng-bind="$parent.$index * items.length + ($index + 1)"></td>
+                        <td class="tab">{{item.group}}</td>
+                        <td class="tab">{{item.impr}}</td>
+                        <td class="tab">{{item.ctr}}</td>
+                        <td class="tab">{{item.evpm}}</td>
+                    </tr>
+                </table>
+            </md-tab>
+        </md-tabs>
+
+    </div>
+</div>
+
+<div id="footer" class="footer" md-whiteframe="8">
+    <table>
+        <tr>
+            <td>
+                <div>Developed by Aleksey Khramov | Email: <a
+                        href="mailto:alekseykhram@gmail.com">alekseykhram@gmail.com</a>
+                    | <a href="https://www.linkedin.com/in/khramov-aleksey/?locale=en_US" target="_blank">Linked
+                        <span style="background-color: dodgerblue; color: white; white-space: pre"> in </span></a>
+                </div>
+            </td>
+        </tr>
+    </table>
+</div>
+
+</body>
+</html>

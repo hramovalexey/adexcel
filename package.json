@@ -1,0 +1,7 @@
+{
+  "name": "ctr",
+  "version": "1.0.0",
+  "dependencies": {
+    "chart": "^0.1.2"
+  }
+}

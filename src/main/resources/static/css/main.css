@@ -1,0 +1,178 @@
+body {
+    height: fit-content;
+    background-color: #f8f6ff;
+    /*background-color: #f4efff*/
+}
+
+.header {
+    /*background-color: #8370D8;*/
+    background: linear-gradient(90deg, rgba(131, 112, 216, 1) 0%, rgba(169, 162, 201, 1) 100%);
+    padding-bottom: 5px;
+    padding-top: 5px;
+    width: 90%;
+    min-width: fit-content;
+    margin-left: auto;
+    margin-right: auto;
+    max-width: 1300px;
+}
+
+.footer {
+    background-color: #e9e4ff;
+    margin-top: 15px;
+    display: flex;
+    justify-content: center;
+    font-size: 12px;
+    /*width: 90%;*/
+    /*min-width: fit-content;*/
+    /*margin-left: auto;*/
+    /*margin-right: auto;*/
+}
+
+table.header {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin-left: 70px;
+}
+
+.table_tile {
+    width: fit-content;
+    /*margin-left: 35px;*/
+    margin-left: 17px;
+    margin-right: 17px;
+    margin-top: 20px;
+}
+
+.graph_tile {
+    width: 610px;
+    /*margin-left: 35px;*/
+    margin-left: 17px;
+    margin-right: 17px;
+    margin-top: 20px;
+    background-color: white;
+}
+
+.row {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: flex-start;
+}
+
+.button_sm {
+    min-width: 1%;
+    width: min-content;
+    font-size: 9px;
+}
+
+md-tabs.tab, table.tab {
+    margin-left: auto;
+    margin-right: auto;
+}
+
+table.tab {
+    border-bottom: 2px solid #c9c9c9;
+    border-collapse: collapse;
+}
+
+tr.tab:nth-child(odd) {
+    background-color: #eeeeee;
+}
+
+tr.tab:nth-child(even) {
+    background-color: white;
+}
+
+td.tab {
+    padding-right: 15px;
+    padding-left: 15px;
+    font-size: 14px;
+    /*padding-bottom: 2px;*/
+    /*padding-top: 2px;*/
+}
+
+tr.tabHeader {
+    height: 48px;
+    background-color: #352d49;
+    color: #efefef;
+}
+
+td.clickable:hover {
+    cursor: pointer;
+    color: antiquewhite;
+}
+
+td.clickable:focus {
+    color: tan;
+}
+
+table.site {
+    width: 630px;
+}
+
+table.dma {
+    /*width: 500px;*/
+    width: 100%
+}
+
+md-select.tab {
+    width: 100px;
+}
+
+.aggr_header {
+    background-color: white;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    border-top: 3px solid #FFCE00;
+
+    /*display: flex;*/
+    /*flex-wrap: wrap;*/
+    /*flex-direction: row;*/
+    /*align-items: baseline;*/
+}
+
+.rate_header {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: center;
+    border-top: 3px solid #FFCE00;
+}
+
+.font10 {
+    font-size: 12px;
+}
+
+.span_middle {
+    margin-top: auto;
+    margin-bottom: auto;
+    margin-right: 10px;
+    margin-left: 10px;
+}
+
+.span_note {
+    position: relative;
+    top: -24px;
+}
+
+.progress {
+    position: relative;
+    /*top: 28px;*/
+
+}
+
+.progress_element {
+    transform: scale(0.5);
+    width: 1px !important;
+    height: 32px !important;
+}
+
+.transparent {
+    color: transparent;
+}
+
+button {
+    color: grey !important;
+}
