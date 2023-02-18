@@ -81,6 +81,7 @@ Resolving logic is implemented at [EventDbImporter](src/main/java/adxcel/ctr/ser
 Measure table is presented by combination of Impression Fact, HappenV, HappenC tables.
 
 HappenV and HappenC entities needed for many-to-many relationship elimination. These tables store information about quantity of happened events for every impression
+
 Time entity is used instead of timestamp field for facilitation of calculations for different time resolutions (by days, hours etc.)
 
 ERD diagram:
