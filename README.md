@@ -3,7 +3,12 @@
 ## Online version
 http://176.118.165.246:8080/
 
-## Quick start on local mashine
+## Important!
+Since GitHub prohibits large files, you need to place source file interview.X.csv manually into folder [resources](src/main/resources)
+
+File interview.y.csv is already there
+
+## Quick start on local machine
 1 Prerequisites:
 - Java 11 and environment variable JAVA_HOME pointing at JDK
 - Maven
@@ -37,7 +42,7 @@ spring.datasource.username
 spring.datasource.password
 ```
 
-3 Run commands from folder with cloned porject:
+3 Run commands from a folder with cloned project:
 ```
 mvn -DskipTests=true clean package
 java -jar target/ctr-0.0.1-SNAPSHOT.jar
@@ -48,7 +53,7 @@ http://localhost:8080/
 
 ## Project description
 - Backend is implemented on Spring Boot using JAVA 11
-- Database level leverages PostgreSQL. You can use any other SQL DB changing suitable connection properties at [application.properties](src/main/resources/application.properties) but I didn't check the functionality of this application with other DBMSs. However, I think it should work as I don't use any Postgres-specific SQL commands in DB requests.
+- Database level leverages PostgreSQL. You can use any other SQL DB changing connection properties at [application.properties](src/main/resources/application.properties) but I didn't check the functionality of this application with other DBMSs. However, I think it should work as I don't use any Postgres-specific SQL commands in DB requests.
 - Interaction between application and database is based on Hibernate library and CRUD Repository interface
 - Frontend interacts with backend through REST API.
 - Frontend leverages Thymeleaf template and runs as Single page application (SPA).
@@ -57,12 +62,12 @@ http://localhost:8080/
 
 ## Task implementation details
 
-1 Since this is only test task I let myself make some assumptions and simplification. Otherwise, I would not be able to meet the deadline. Regarding this I left some 'TODO' comment in code. These TODOs mean: I know that app will be better if I do this, but it is only test taks :)
-Due to the same reason my task implementation doesn't take into accont the following aspects:
-- App uploads data only once during first start if 'sees' empty ctr database. Source csv files are present staticaly in [resources](src/main/resources) folder. I didn`t implement any online data upload via UI
+1 Since this is only test task I let myself make some assumptions and simplification. Otherwise, I would not be able to meet the deadline. Regarding this I left some 'TODO' comments in code. These TODOs mean: I know that app will be better if I do this, but it is only test tasks :)
+Due to the same reason my task implementation doesn't take into account the following aspects:
+- App uploads data only once during first start if 'sees' empty ctr database. Source csv files are present statically in [resources](src/main/resources) folder. I didn`t implement any online data upload via UI
 - Some SQL queries are time costly and in real environment problem of caching must be considered
 - To speed up development process I used Spring Boot with auto configuration functionality. Hence, I don't use sessionFactory for DB queries explicitly but utilize CRUD Repository interface with annotation-based SQL queries. So some queries turned out to be too verbose.
-- I made graphs for several time resolutions: days, hours and 30 minutes. But I noticed that only day graphs look sensible: hour and 30 minutes graphs have rare and very high jumps and don't look readable. Actually I don't know for what time periods have you used to consider CTR and EvPM values.
+- I made graphs for several time resolutions: days, hours and 30 minutes. But I noticed that only day graphs look sensible: hour and 30 minutes graphs have rare and very high jumps and don't look readable. Actually I don't know for what time periods you look CTR and EvPM values on practice.
 - Mikhail said that impression uids are not necessary unique. I analyzed such cases and noticed that majority of them had happened during 1 - 2 minutes interval and have similar parameters (dma, OS etc.). I have not information about the 'nature' of this phenomenon, but I decided to link the only one of all non-unique uids to corresponding event. If maximum interval between events is more than 100 second I ignore it as unresolved. As result, the given dataset has only 5 such unresolved cases. In the end uploading process application will output report where you will find information about uids resolving. It will look like this:
 
 ```
